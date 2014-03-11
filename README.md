@@ -66,6 +66,8 @@ $ard->rewind() // Reset cursor back to the first line
     * Create new method merge
 * 0.4.0 :
     * Create new method save
+* 0.4.1 :
+    * Change \\n to PHP_EOL
 
 ## License
 ### The MIT License (MIT)
