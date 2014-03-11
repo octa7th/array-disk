@@ -118,6 +118,7 @@ class Array_Disk {
 		$this->_write_handle->fwrite(json_encode($data) . PHP_EOL);
 		$this->_total++;
 	}
+
 	/**
 	 * Push new element to Array_Disk Object (alias of append)
 	 * @param mixed $data
@@ -131,7 +132,6 @@ class Array_Disk {
 
 	/**
 	 * Merge array_disk with another array
-	 *
 	 * @param array $data
 	 */
 	public function merge(array $data)
