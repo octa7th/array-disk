@@ -53,5 +53,21 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($data[0], $this->ard->get(0));
 		$this->assertEquals($data[2], $this->ard->get(2));
 	}
+
+	public function testGetTotalLines()
+	{
+		$data = array(
+			'Test append file 1',
+			'Test append file 2',
+			'Test append file 3'
+		);
+		$this->ard->store($data);
+		$filename = $this->ard->get_filename();
+
+		// Create new array disk object
+		$ard = new Array_Disk($filename);
+		$this->assertEquals(3, $ard->length());
+	}
+
 }
  

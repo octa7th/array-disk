@@ -7,7 +7,7 @@
  * @author    Muhammad Sofyan <octa7th@gmail.com>
  * @copyright Copyright (c) 2014
  * @license   http://opensource.org/licenses/MIT
- * @version   0.1.0
+ * @version   0.1.1
  */
 
 class Array_Disk {
@@ -58,6 +58,7 @@ class Array_Disk {
 			if(file_exists($filename))
 			{
 				$this->_filename = $filename;
+				$this->_total    = $this->get_total_lines($filename);
 			}
 		}
 		$this->_write_handle = new SplFileObject($this->_filename, "w");
@@ -129,6 +130,29 @@ class Array_Disk {
 	public function length()
 	{
 		return $this->_total;
+	}
+
+	/**
+	 * Get total lines of particular file
+	 * @param string $filename
+	 * @return int Total line number
+	 */
+	public function get_total_lines($filename = '')
+	{
+		$lineCount = 0;
+
+		if(file_exists($filename))
+		{
+			$handle = fopen($filename, "r");
+			while( ! feof($handle) )
+			{
+				$line      = fgets($handle, 4096);
+				$lineCount = $lineCount + substr_count($line, PHP_EOL);
+			}
+			fclose($handle);
+		}
+
+		return $lineCount;
 	}
 
 	function __destruct()
