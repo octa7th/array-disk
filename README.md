@@ -12,24 +12,42 @@ Store your array in temporary file to decrease memory usage when having a very v
 
 ## How to use
 ```php
-require 'Array_Disk.php'
+require 'Array_Disk.php';
 
+// Create new array disk object
 $ard = new Array_Disk();
 
-$ard->append('Value 0');
-$ard->append('Value 1');
-$ard->append('Value 2');
+$data = array( 'Value 0', 'Value 1', 'Value 2' );
 
-$ard->get(1); // return 'Value 1'
+$ard->store($data); // Store a whole array in array disk object
 
-// You can also use store method
-$data = array(
-    'Value 0',
-    'Value 1',
-    'Value 2'
-);
-$ard->store($data);
-$ard->length(); // return 3
+$ard->length(); // Get current array length (return 3)
+
+$ard->append('Value 3'); // Append value to array disk object
+
+$ard->push('Value 4'); // Alias of append
+
+$ard->length(); // return 5
+
+$ard->pop(); // Remove last element from array disk object and return the last element (return 'Value 4')
+
+$ard->get(1); // Get array value in key 1 (return 'Value 1')
+
+$ard->merge(array('Value 5', 'Value 6')); // Merge array disk object with another array
+
+$ard->length(); // return 6
+
+$filename = $ard->get_filename(); // Get filename of array disk object storage
+
+$ard->read(); // Read array value from the first line (return 'Value 0')
+$ard->read(); // return 'Value 1'
+$ard->read(); // return 'Value 2'
+$ard->read(); // return 'Value 3'
+$ard->read(); // return 'Value 5'
+$ard->read(); // return 'Value 6'
+
+$ard->rewind() // Reset cursor back to the first line
+
 ```
 
 ## Changelog
@@ -52,7 +70,7 @@ $ard->length(); // return 3
 ## License
 ### The MIT License (MIT)
 
-Copyright (c) 2014, Muhammad Sofyan <octa7th@gmail.com>
+Copyright (c) 2014, Muhammad Sofyan \<<octa7th@gmail.com>\>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
