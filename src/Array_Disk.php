@@ -7,7 +7,7 @@
  * @author    Muhammad Sofyan <octa7th@gmail.com>
  * @copyright Copyright (c) 2014
  * @license   http://opensource.org/licenses/MIT
- * @version   0.1.2
+ * @version   0.2.0
  */
 
 class Array_Disk {
@@ -99,6 +99,35 @@ class Array_Disk {
 		$this->_write_handle->fseek($this->_write_handle->ftell());
 		$this->_write_handle->fwrite(json_encode($data) ."\n");
 		$this->_total++;
+	}
+
+	/**
+	 * Push new element to Array_Disk Object (alias of append)
+	 * @param mixed $data
+	 */
+	public function push($data = NULL)
+	{
+		$this->_write_handle->fseek($this->_write_handle->ftell());
+		$this->_write_handle->fwrite(json_encode($data) ."\n");
+		$this->_total++;
+	}
+
+	/**
+	 * Pop the element off the end of array
+	 *
+	 * @return mixed the last value of the array
+	 */
+	public function pop()
+	{
+		$lastLine = $this->_total - 1;
+		$this->_read_handle->seek($lastLine);
+		$jsonData = $this->_read_handle->current();
+		$length   = strlen($jsonData);
+		$truncate = $this->_write_handle->ftell() - $length;
+		$this->_write_handle->ftruncate($truncate);
+		$this->_write_handle->fseek($truncate);
+		$this->_total--;
+		return json_decode($jsonData, TRUE);
 	}
 
 	/**

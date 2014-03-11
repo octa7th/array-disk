@@ -87,5 +87,26 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($data, $dataStored);
 	}
 
+	public function testArrayPop()
+	{
+		$data = array(
+			'Test append file 1',
+			'Test append file 2',
+			'Test append file 3'
+		);
+		$this->ard->store($data);
+		$popData = $this->ard->pop();
+		$this->assertEquals(end($data), $popData);
+
+		$dataStored = array();
+
+		while($d = $this->ard->read())
+		{
+			$dataStored[] = $d;
+		}
+
+		$this->assertEquals(2, count($dataStored));
+	}
+
 }
  

@@ -39,7 +39,10 @@ $ard->length(); // return 3
     * Create new method to get line number of particular file
     * If filename is defined in construct parameter, then use that file's line number as array length
 * 0.1.2 :
-    * Fix filename bugs
+    * Fix bugs #1
+* 0.2.0 :
+    * Create new method push (alias of append)
+    * Create new method pop
 
 ## License
 ### The MIT License (MIT)
