@@ -55,9 +55,9 @@ class Array_Disk {
 		}
 		else
 		{
+			$this->_filename = $filename;
 			if(file_exists($filename))
 			{
-				$this->_filename = $filename;
 				$this->_total    = $this->get_total_lines($filename);
 			}
 		}
