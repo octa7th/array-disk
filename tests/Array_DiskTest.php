@@ -96,7 +96,7 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		);
 		$this->ard->store($data);
 		$popData = $this->ard->pop();
-		$this->assertEquals(end($data), $popData);
+		$this->assertEquals(array_pop($data), $popData);
 
 		$dataStored = array();
 
@@ -105,7 +105,7 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 			$dataStored[] = $d;
 		}
 
-		$this->assertEquals(2, count($dataStored));
+		$this->assertEquals($data, $dataStored);
 	}
 
 }
