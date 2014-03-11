@@ -99,13 +99,53 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(array_pop($data), $popData);
 
 		$dataStored = array();
-
 		while($d = $this->ard->read())
 		{
 			$dataStored[] = $d;
 		}
 
 		$this->assertEquals($data, $dataStored);
+	}
+
+	public function testRewind()
+	{
+		$data = array(
+			'Test append file 1',
+			'Test append file 2',
+			'Test append file 3'
+		);
+		$this->ard->store($data);
+		$this->ard->read();
+		$this->ard->read();
+		$this->ard->rewind();
+		$this->assertEquals($data[0], $this->ard->read());
+		$this->assertEquals($data[1], $this->ard->read());
+		$this->assertEquals($data[2], $this->ard->read());
+	}
+
+	public function testMerge()
+	{
+		$data1 = array(
+			'Test append file 1',
+			'Test append file 2',
+			'Test append file 3'
+		);
+		$data2 = array(
+			'Test append file 4',
+			'Test append file 5',
+			'Test append file 6'
+		);
+		$this->ard->store($data1);
+		$this->ard->merge($data2);
+
+		$dataStored = array();
+		while($d = $this->ard->read())
+		{
+			$dataStored[] = $d;
+		}
+
+		$this->assertEquals(array_merge($data1, $data2), $dataStored);
+		$this->assertEquals(6, $this->ard->length());
 	}
 
 }

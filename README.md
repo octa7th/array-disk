@@ -43,6 +43,9 @@ $ard->length(); // return 3
 * 0.2.0 :
     * Create new method push (alias of append)
     * Create new method pop
+* 0.3.0 :
+	* Create new method rewind
+	* Create new method merge
 
 ## License
 ### The MIT License (MIT)

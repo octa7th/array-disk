@@ -7,7 +7,7 @@
  * @author    Muhammad Sofyan <octa7th@gmail.com>
  * @copyright Copyright (c) 2014
  * @license   http://opensource.org/licenses/MIT
- * @version   0.2.0
+ * @version   0.3.0
  */
 
 class Array_Disk {
@@ -100,7 +100,6 @@ class Array_Disk {
 		$this->_write_handle->fwrite(json_encode($data) ."\n");
 		$this->_total++;
 	}
-
 	/**
 	 * Push new element to Array_Disk Object (alias of append)
 	 * @param mixed $data
@@ -110,6 +109,21 @@ class Array_Disk {
 		$this->_write_handle->fseek($this->_write_handle->ftell());
 		$this->_write_handle->fwrite(json_encode($data) ."\n");
 		$this->_total++;
+	}
+
+	/**
+	 * Merge array_disk with another array
+	 *
+	 * @param array $data
+	 */
+	public function merge(array $data)
+	{
+		$this->_write_handle->fseek($this->_write_handle->ftell());
+		foreach($data as $d)
+		{
+			$this->_write_handle->fwrite(json_encode($d) ."\n");
+		}
+		$this->_total += count($data);
 	}
 
 	/**
@@ -150,6 +164,14 @@ class Array_Disk {
 	public function read()
 	{
 		return $this->get($this->_key++);
+	}
+
+	/**
+	 * Rewind the file to the first line
+	 */
+	public function rewind()
+	{
+		$this->_key = 0;
 	}
 
 	/**
