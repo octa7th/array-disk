@@ -1,0 +1,17 @@
+{
+    "name": "hexastudio/array_disk",
+    "description": "Store array as cache in hardDrive, decrease memory usage",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Muhammad Sofyan",
+            "email": "octa7th@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.4"
+    }
+}
