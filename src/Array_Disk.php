@@ -42,10 +42,16 @@ class Array_Disk {
 	 */
 	private $_key;
 
+	/**
+	 * @var bool : save flag
+	 */
+	private $_save;
+
 	function __construct($filename = '')
 	{
-		$this->_key = 0;
-		$this->_tmp = '/tmp/';
+		$this->_key  = 0;
+		$this->_tmp  = '/tmp/';
+		$this->_save = FALSE;
 
 		if($filename === '')
 		{
@@ -72,6 +78,15 @@ class Array_Disk {
 	public function get_filename()
 	{
 		return $this->_filename;
+	}
+
+	/**
+	 * Set save flag value
+	 * @param boolean : save flag
+	 */
+	public function save($keep = TRUE)
+	{
+		$this->_save = $keep;
 	}
 
 	/**
@@ -212,7 +227,7 @@ class Array_Disk {
 		{
 			unset($this->_write_handle);
 			unset($this->_read_handle);
-			unlink($this->_filename);
+			if( ! $this->_save ) unlink($this->_filename);
 		}
 	}
 

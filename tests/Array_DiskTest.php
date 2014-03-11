@@ -148,5 +148,21 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(6, $this->ard->length());
 	}
 
+	public function testSaveToDisk()
+	{
+		$ard = new Array_Disk();
+		$ard->save();
+		$filename = $ard->get_filename();
+		$ard = NULL;
+		$this->assertFileExists($filename);
+		unlink($filename);
+
+		$ard = new Array_Disk();
+		$ard->save(FALSE);
+		$filename = $ard->get_filename();
+		$ard = NULL;
+		$this->assertFileNotExists($filename);
+	}
+
 }
  
