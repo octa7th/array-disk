@@ -7,7 +7,7 @@
  * @author    Muhammad Sofyan <octa7th@gmail.com>
  * @copyright Copyright (c) 2014
  * @license   http://opensource.org/licenses/MIT
- * @version   0.3.0
+ * @version   0.4.0
  */
 
 class Array_Disk {
@@ -47,6 +47,9 @@ class Array_Disk {
 	 */
 	private $_save;
 
+	/**
+	 * @param string $filename : file name (full path) to be use as array_disk storage
+	 */
 	function __construct($filename = '')
 	{
 		$this->_key  = 0;
