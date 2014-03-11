@@ -103,7 +103,7 @@ class Array_Disk {
 		$this->_write_handle->fseek(0);
 		foreach($data as $d)
 		{
-			$this->_write_handle->fwrite(json_encode($d) ."\n");
+			$this->_write_handle->fwrite(json_encode($d) . PHP_EOL);
 		}
 		$this->_total = count($data);
 	}
@@ -115,7 +115,7 @@ class Array_Disk {
 	public function append($data = NULL)
 	{
 		$this->_write_handle->fseek($this->_write_handle->ftell());
-		$this->_write_handle->fwrite(json_encode($data) ."\n");
+		$this->_write_handle->fwrite(json_encode($data) . PHP_EOL);
 		$this->_total++;
 	}
 	/**
@@ -125,7 +125,7 @@ class Array_Disk {
 	public function push($data = NULL)
 	{
 		$this->_write_handle->fseek($this->_write_handle->ftell());
-		$this->_write_handle->fwrite(json_encode($data) ."\n");
+		$this->_write_handle->fwrite(json_encode($data) . PHP_EOL);
 		$this->_total++;
 	}
 
@@ -139,7 +139,7 @@ class Array_Disk {
 		$this->_write_handle->fseek($this->_write_handle->ftell());
 		foreach($data as $d)
 		{
-			$this->_write_handle->fwrite(json_encode($d) ."\n");
+			$this->_write_handle->fwrite(json_encode($d) . PHP_EOL);
 		}
 		$this->_total += count($data);
 	}
