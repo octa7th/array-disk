@@ -68,6 +68,8 @@ $ard->rewind() // Reset cursor back to the first line
     * Create new method save
 * 0.4.1 :
     * Change \\n to PHP_EOL
+* 0.4.2 :
+    * Support multiple array in merge method
 
 ## License
 ### The MIT License (MIT)
