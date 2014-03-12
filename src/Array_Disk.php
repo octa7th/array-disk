@@ -132,16 +132,23 @@ class Array_Disk {
 
 	/**
 	 * Merge array_disk with another array
-	 * @param array $data
 	 */
-	public function merge(array $data)
+	public function merge()
 	{
+		$args = func_get_args();
 		$this->_write_handle->fseek($this->_write_handle->ftell());
-		foreach($data as $d)
+
+		foreach($args as $data)
 		{
-			$this->_write_handle->fwrite(json_encode($d) . PHP_EOL);
+			if(is_array($data))
+			{
+				foreach($data as $d)
+				{
+					$this->_write_handle->fwrite(json_encode($d) . PHP_EOL);
+				}
+			}
+			$this->_total += count($data);
 		}
-		$this->_total += count($data);
 	}
 
 	/**

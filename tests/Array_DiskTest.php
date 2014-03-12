@@ -146,6 +146,16 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(array_merge($data1, $data2), $dataStored);
 		$this->assertEquals(6, $this->ard->length());
+
+		$this->ard->merge($data2, $data2, $data2);
+		$this->ard->rewind();
+		$dataStored = array();
+		while($d = $this->ard->read())
+		{
+			$dataStored[] = $d;
+		}
+		$this->assertEquals(array_merge($data1, $data2, $data2, $data2, $data2), $dataStored);
+		$this->assertEquals(15, $this->ard->length());
 	}
 
 	public function testSaveToDisk()
