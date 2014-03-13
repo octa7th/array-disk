@@ -7,7 +7,7 @@
  * @author    Muhammad Sofyan <octa7th@gmail.com>
  * @copyright Copyright (c) 2014
  * @license   http://opensource.org/licenses/MIT
- * @version   0.4.2
+ * @version   0.5.0
  */
 
 class Array_Disk {

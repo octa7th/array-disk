@@ -70,6 +70,8 @@ $ard->rewind() // Reset cursor back to the first line
     * Change \\n to PHP_EOL
 * 0.4.2 :
     * Support multiple array in merge method
+* 0.5.0 :
+    * Create new method fetch_all
 
 ## License
 ### The MIT License (MIT)
