@@ -182,13 +182,31 @@ class Array_Disk {
 	}
 
 	/**
-	 * Read all array data
+	 * Read array data in current line
 	 * Use this for iteration
 	 * @return mixed the element's value
 	 */
 	public function read()
 	{
 		return $this->get($this->_key++);
+	}
+
+	/**
+	 * Fetch all array data
+	 * @return array : a whole array data
+	 */
+	public function fetch_all()
+	{
+		$this->rewind();
+		$data = array();
+
+		while($d = $this->read())
+		{
+			$data[] = $d;
+		}
+
+		$this->rewind();
+		return $data;
 	}
 
 	/**

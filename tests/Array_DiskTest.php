@@ -174,5 +174,16 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$this->assertFileNotExists($filename);
 	}
 
+	public function testFetchAll()
+	{
+		$data = array(
+			'Test append file 1',
+			'Test append file 2',
+			'Test append file 3'
+		);
+		$this->ard->store($data);
+		$this->assertEquals($data, $this->ard->fetch_all());
+	}
+
 }
  
