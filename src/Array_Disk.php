@@ -131,6 +131,31 @@ class Array_Disk {
 	}
 
 	/**
+	 * Prepend new element to Array_Disk object
+	 * @param mixed $data
+	 */
+	public function prepend($data = NULL)
+	{
+		$cache_new = json_encode($data) . PHP_EOL; // this gets prepended
+		$file = $this->_filename; // the file to which $cache_new gets prepended
+
+		$handle    = fopen($file, "r+");
+		$len       = strlen($cache_new);
+		$final_len = filesize($file) + $len;
+		$cache_old = fread($handle, $len);
+		rewind($handle);
+		$i = 1;
+		while (ftell($handle) < $final_len)
+		{
+			fwrite($handle, $cache_new);
+			$cache_new = $cache_old;
+			$cache_old = fread($handle, $len);
+			fseek($handle, $i * $len);
+			$i++;
+		}
+	}
+
+	/**
 	 * Merge array_disk with another array
 	 */
 	public function merge()
