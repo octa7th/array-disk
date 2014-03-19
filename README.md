@@ -72,6 +72,8 @@ $ard->rewind() // Reset cursor back to the first line
     * Support multiple array in merge method
 * 0.5.0 :
     * Create new method fetch_all
+* 0.5.1 :
+	* Fix bugs total is NULL
 
 ## License
 ### The MIT License (MIT)
