@@ -185,5 +185,12 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($data, $this->ard->fetch_all());
 	}
 
+	public function testArrayLengthWhenFileIsNotExist()
+	{
+		$filename = '/tmp/notExistRandomFile-' . uniqid();
+		$ard = new Array_Disk($filename);
+		$this->assertTrue($ard->length() === 0);
+	}
+
 }
  

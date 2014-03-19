@@ -52,14 +52,14 @@ class Array_Disk {
 	 */
 	function __construct($filename = '')
 	{
-		$this->_key  = 0;
-		$this->_tmp  = '/tmp/';
-		$this->_save = FALSE;
+		$this->_key   = 0;
+		$this->_tmp   = '/tmp/';
+		$this->_save  = FALSE;
+		$this->_total = 0;
 
 		if($filename === '')
 		{
 			$unique = uniqid('ard_');
-			$this->_total    = 0;
 			$this->_filename = $this->_tmp . $unique . '.ard';
 		}
 		else
