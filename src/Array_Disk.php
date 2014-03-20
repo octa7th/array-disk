@@ -23,9 +23,9 @@ class Array_Disk {
 	private $_read_handle;
 
 	/**
-	 * @var string tmp folder path
+	 * @var string temporary folder path
 	 */
-	private $_tmp;
+	private $_temp;
 
 	/**
 	 * @var string temporary file for Array_Disk Object
@@ -53,14 +53,14 @@ class Array_Disk {
 	function __construct($filename = '')
 	{
 		$this->_key   = 0;
-		$this->_tmp   = '/tmp/';
+		$this->_temp  = '/tmp/';
 		$this->_save  = FALSE;
 		$this->_total = 0;
 
 		if($filename === '')
 		{
 			$unique = uniqid('ard_');
-			$this->_filename = $this->_tmp . $unique . '.ard';
+			$this->_filename = $this->_temp . $unique . '.ard';
 		}
 		else
 		{
@@ -70,8 +70,8 @@ class Array_Disk {
 				$this->_total    = $this->get_total_lines($filename);
 			}
 		}
-		$this->_write_handle = new SplFileObject($this->_filename, "w");
-		$this->_read_handle  = new SplFileObject($this->_filename, "r");
+		$this->_write_handle = new SplFileObject($this->_filename, 'w');
+		$this->_read_handle  = new SplFileObject($this->_filename, 'r');
 	}
 
 	/**
@@ -101,9 +101,9 @@ class Array_Disk {
 	{
 		$this->_write_handle->ftruncate(0);
 		$this->_write_handle->fseek(0);
-		foreach($data as $d)
+		foreach($data as $element)
 		{
-			$this->_write_handle->fwrite(json_encode($d) . PHP_EOL);
+			$this->_write_handle->fwrite(json_encode($element) . PHP_EOL);
 		}
 		$this->_total = count($data);
 	}
@@ -142,9 +142,9 @@ class Array_Disk {
 		{
 			if(is_array($data))
 			{
-				foreach($data as $d)
+				foreach($data as $element)
 				{
-					$this->_write_handle->fwrite(json_encode($d) . PHP_EOL);
+					$this->_write_handle->fwrite(json_encode($element) . PHP_EOL);
 				}
 			}
 			$this->_total += count($data);
@@ -158,25 +158,25 @@ class Array_Disk {
 	 */
 	public function pop()
 	{
-		$lastLine = $this->_total - 1;
-		$this->_read_handle->seek($lastLine);
-		$jsonData = $this->_read_handle->current();
-		$length   = strlen($jsonData);
+		$last_line = $this->_total - 1;
+		$this->_read_handle->seek($last_line);
+		$json_data = $this->_read_handle->current();
+		$length   = strlen($json_data);
 		$truncate = $this->_write_handle->ftell() - $length;
 		$this->_write_handle->ftruncate($truncate);
 		$this->_write_handle->fseek($truncate);
 		$this->_total--;
-		return json_decode($jsonData, TRUE);
+		return json_decode($json_data, TRUE);
 	}
 
 	/**
 	 * Get value of certain key
-	 * @param int $key
+	 * @param int $array_key
 	 * @return mixed the element's value
 	 */
-	public function get($key = 0)
+	public function get($array_key = 0)
 	{
-		$this->_read_handle->seek($key);
+		$this->_read_handle->seek($array_key);
 		$data = $this->_read_handle->current();
 		return json_decode($data, TRUE);
 	}
@@ -200,9 +200,9 @@ class Array_Disk {
 		$this->rewind();
 		$data = array();
 
-		while($d = $this->read())
+		while($element = $this->read())
 		{
-			$data[] = $d;
+			$data[] = $element;
 		}
 
 		$this->rewind();
@@ -233,20 +233,20 @@ class Array_Disk {
 	 */
 	public function get_total_lines($filename = '')
 	{
-		$lineCount = 0;
+		$line_count = 0;
 
 		if(file_exists($filename))
 		{
-			$handle = fopen($filename, "r");
+			$handle = fopen($filename, 'r');
 			while( ! feof($handle) )
 			{
 				$line      = fgets($handle, 4096);
-				$lineCount = $lineCount + substr_count($line, PHP_EOL);
+				$line_count = $line_count + substr_count($line, PHP_EOL);
 			}
 			fclose($handle);
 		}
 
-		return $lineCount;
+		return $line_count;
 	}
 
 	function __destruct()
