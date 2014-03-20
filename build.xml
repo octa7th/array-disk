@@ -69,12 +69,11 @@
   </exec>
  </target>
 
- <target name="phpmd"
-         description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
+ <target name="phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
   <exec executable="phpmd">
-   <arg path="${basedir}/src" />
-   <arg value="text" />
-   <arg value="${basedir}/build/phpmd.xml" />
+    <arg path="${basedir}/src" />
+    <arg value="text" />
+    <arg value="${basedir}/build/phpmd.xml" />
   </exec>
  </target>
 
@@ -88,19 +87,18 @@
   </exec>
  </target>
 
- <target name="phpcs"
-         description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
+ <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
   <exec executable="phpcs">
-   <arg value="--standard=${basedir}/build/phpcs.xml" />
-   <arg path="${basedir}/src" />
+    <arg value="--standard=CodeIgniter" />
+    <arg value="--extensions=php" />
+    <arg path="${basedir}/src" />
   </exec>
  </target>
 
  <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
-  <exec executable="phpcs" output="/dev/null">
+  <exec executable="phpcs" output="${basedir}/build/logs/checkstyle.xml">
    <arg value="--report=checkstyle" />
-   <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
-   <arg value="--standard=${basedir}/build/phpcs.xml" />
+   <arg value="--standard=CodeIgniter" />
    <arg path="${basedir}/src" />
   </exec>
  </target>
