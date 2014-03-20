@@ -6,6 +6,18 @@
     </collector>
     <generator output="${basedir}/build">
       <build engine="html" enabled="true" output="api"/>
+        <enrich base="${basedir}/build/logs">
+          <source type="build" />
+          <source type="git">
+            <history enabled="true" limit="15" />
+          </source>
+          <source type="checkstyle" />
+          <source type="pmd" />
+          <source type="phploc" />
+          <source type="phpunit">
+            <coverage path="coverage/xml" />
+          </source>
+        </enrich>
     </generator>
   </project>
 </phpdox>
