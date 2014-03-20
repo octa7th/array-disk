@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Array-disk by octa7th</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Array-disk</h1>
+        <h2>Store your array in temporary file to decrease memory usage when having a very very big array.</h2>
+        <a href="https://github.com/octa7th/array-disk" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="array-disk" class="anchor" href="#array-disk"><span class="octicon octicon-link"></span></a>Array Disk</h1>
+
+<p>Store your array in temporary file to decrease memory usage when having a very very big array.</p>
+
+<h2>
+<a name="requirement" class="anchor" href="#requirement"><span class="octicon octicon-link"></span></a>Requirement</h2>
+
+<ul>
+<li>PHP &gt;= 5.1.0</li>
+</ul><h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Create array_disk using existing array</li>
+<li>Fetch array_disk line by line</li>
+<li>Fetch value using array_disk's key</li>
+<li>Append new value to array_disk</li>
+</ul><h2>
+<a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use</h2>
+
+<div class="highlight highlight-php"><pre><span class="k">require</span> <span class="s1">'Array_Disk.php'</span><span class="p">;</span>
+
+<span class="c1">// Create new array disk object</span>
+<span class="nv">$ard</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Array_Disk</span><span class="p">();</span>
+
+<span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span> <span class="s1">'Value 0'</span><span class="p">,</span> <span class="s1">'Value 1'</span><span class="p">,</span> <span class="s1">'Value 2'</span> <span class="p">);</span>
+
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">store</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span> <span class="c1">// Store a whole array in array disk object</span>
+
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">length</span><span class="p">();</span> <span class="c1">// Get current array length (return 3)</span>
+
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">append</span><span class="p">(</span><span class="s1">'Value 3'</span><span class="p">);</span> <span class="c1">// Append value to array disk object</span>
+
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="s1">'Value 4'</span><span class="p">);</span> <span class="c1">// Alias of append</span>
+
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">length</span><span class="p">();</span> <span class="c1">// return 5</span>
+
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">();</span> <span class="c1">// Remove last element from array disk object and return the last element (return 'Value 4')</span>
+
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// Get array value in key 1 (return 'Value 1')</span>
+
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">merge</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">'Value 5'</span><span class="p">,</span> <span class="s1">'Value 6'</span><span class="p">));</span> <span class="c1">// Merge array disk object with another array</span>
+
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">length</span><span class="p">();</span> <span class="c1">// return 6</span>
+
+<span class="nv">$filename</span> <span class="o">=</span> <span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">get_filename</span><span class="p">();</span> <span class="c1">// Get filename of array disk object storage</span>
+
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">read</span><span class="p">();</span> <span class="c1">// Read array value from the first line (return 'Value 0')</span>
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">read</span><span class="p">();</span> <span class="c1">// return 'Value 1'</span>
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">read</span><span class="p">();</span> <span class="c1">// return 'Value 2'</span>
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">read</span><span class="p">();</span> <span class="c1">// return 'Value 3'</span>
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">read</span><span class="p">();</span> <span class="c1">// return 'Value 5'</span>
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">read</span><span class="p">();</span> <span class="c1">// return 'Value 6'</span>
+
+<span class="nv">$ard</span><span class="o">-&gt;</span><span class="na">rewind</span><span class="p">()</span> <span class="c1">// Reset cursor back to the first line</span>
+
+</pre></div>
+
+<h2>
+<a name="changelog" class="anchor" href="#changelog"><span class="octicon octicon-link"></span></a>Changelog</h2>
+
+<ul>
+<li>0.1.0 :
+
+<ul>
+<li>Original Class</li>
+</ul>
+</li>
+<li>0.1.1 :
+
+<ul>
+<li>Create new method to get line number of particular file</li>
+<li>If filename is defined in construct parameter, then use that file's line number as array length</li>
+</ul>
+</li>
+<li>0.1.2 :
+
+<ul>
+<li>Fix bugs #1</li>
+</ul>
+</li>
+<li>0.2.0 :
+
+<ul>
+<li>Create new method push (alias of append)</li>
+<li>Create new method pop</li>
+</ul>
+</li>
+<li>0.3.0 :
+
+<ul>
+<li>Create new method rewind</li>
+<li>Create new method merge</li>
+</ul>
+</li>
+<li>0.4.0 :
+
+<ul>
+<li>Create new method save</li>
+</ul>
+</li>
+<li>0.4.1 :
+
+<ul>
+<li>Change \n to PHP_EOL</li>
+</ul>
+</li>
+<li>0.4.2 :
+
+<ul>
+<li>Support multiple array in merge method</li>
+</ul>
+</li>
+<li>0.5.0 :
+
+<ul>
+<li>Create new method fetch_all</li>
+</ul>
+</li>
+<li>0.5.1 :
+
+<ul>
+<li>Fix bugs total is NULL</li>
+</ul>
+</li>
+</ul><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<h3>
+<a name="the-mit-license-mit" class="anchor" href="#the-mit-license-mit"><span class="octicon octicon-link"></span></a>The MIT License (MIT)</h3>
+
+<p>Copyright (c) 2014, Muhammad Sofyan &lt;<a href="mailto:octa7th@gmail.com">octa7th@gmail.com</a>&gt;</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/octa7th/array-disk/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/octa7th/array-disk/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/octa7th/array-disk"></a> is maintained by <a href="https://github.com/octa7th">octa7th</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
