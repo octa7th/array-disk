@@ -2,7 +2,7 @@
 
 <project name="name-of-project" default="build">
  <target name="build"
-   depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit"/>
+   depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc,phpunit"/>
 
  <target name="build-parallel"
    depends="prepare,lint,tools-parallel,phpunit"/>
@@ -113,6 +113,14 @@
 
  <target name="phpdox" description="Generate API documentation using phpDox">
   <exec executable="phpdox"/>
+ </target>
+
+ <target name="phpdoc" description="Generate API documentation using phpDoc">
+  <exec executable="php">
+    <arg path="/home/octa/app/phpdoc.phar" />
+    <arg value="--target=build/doc" />
+    <arg value="--directory=src" />
+  </exec>
  </target>
 
  <target name="phpunit" description="Run unit tests with PHPUnit">
