@@ -3,9 +3,12 @@
 /**
  * Array_Disk Class
  *
+ * Store your array in temporary file to decrease memory usage when having a very very big array.
+ *
+ * @package   Array Disk
  * @category  File manipulation
  * @author    Muhammad Sofyan <octa7th@gmail.com>
- * @copyright Copyright (c) 2014
+ * @copyright 2014 Muhammad Sofyan
  * @license   http://opensource.org/licenses/MIT
  * @version   0.5.1
  */
@@ -13,11 +16,15 @@
 class Array_Disk {
 
 	/**
+	 * SplFileObject uses for write text into array disk file
+	 *
 	 * @var SplFileObject
 	 */
 	private $_write_handle;
 
 	/**
+	 * SplFileObject uses for read the array disk file
+	 *
 	 * @var SplFileObject
 	 */
 	private $_read_handle;
@@ -48,7 +55,10 @@ class Array_Disk {
 	private $_save;
 
 	/**
+	 * Magic method construct.
+	 * Create array disk file, if $filename parameter is specified then use that file as array disk file
 	 * @param string $filename : file name (full path) to be use as array_disk storage
+	 * @since 0.1.0
 	 */
 	function __construct($filename = '')
 	{
@@ -77,6 +87,7 @@ class Array_Disk {
 	/**
 	 * Get filename of Array_Disk object storage
 	 * @return string
+	 * @since 0.1.0
 	 */
 	public function get_filename()
 	{
@@ -85,7 +96,8 @@ class Array_Disk {
 
 	/**
 	 * Set save flag value
-	 * @param boolean : save flag
+	 * @param boolean $keep Should we keep the file?
+	 * @since 0.4.0
 	 */
 	public function save($keep = TRUE)
 	{
@@ -93,9 +105,10 @@ class Array_Disk {
 	}
 
 	/**
-	 * Store a whole array to Array_Disk object
-	 * Override data if it's not empty
+	 * Store a whole array to Array_Disk object.
+	 * Use with caution, this method will override existing data
 	 * @param array $data
+	 * @since 0.1.0
 	 */
 	public function store(array $data)
 	{
@@ -111,6 +124,7 @@ class Array_Disk {
 	/**
 	 * Append new element to Array_Disk Object
 	 * @param mixed $data
+	 * @since 0.1.0
 	 */
 	public function append($data = NULL)
 	{
@@ -122,6 +136,7 @@ class Array_Disk {
 	/**
 	 * Push new element to Array_Disk Object (alias of append)
 	 * @param mixed $data
+	 * @since 0.2.0
 	 */
 	public function push($data = NULL)
 	{
@@ -132,6 +147,7 @@ class Array_Disk {
 
 	/**
 	 * Merge array_disk with another array
+	 * @since 0.3.0
 	 */
 	public function merge()
 	{
@@ -153,8 +169,8 @@ class Array_Disk {
 
 	/**
 	 * Pop the element off the end of array
-	 *
-	 * @return mixed the last value of the array
+	 * @return mixed The last value of the array
+	 * @since 0.2.0
 	 */
 	public function pop()
 	{
@@ -173,6 +189,7 @@ class Array_Disk {
 	 * Get value of certain key
 	 * @param int $array_key
 	 * @return mixed the element's value
+	 * @since 0.1.0
 	 */
 	public function get($array_key = 0)
 	{
@@ -185,6 +202,7 @@ class Array_Disk {
 	 * Read array data in current line
 	 * Use this for iteration
 	 * @return mixed the element's value
+	 * @since 0.1.0
 	 */
 	public function read()
 	{
@@ -194,6 +212,7 @@ class Array_Disk {
 	/**
 	 * Fetch all array data
 	 * @return array : a whole array data
+	 * @since 0.5.0
 	 */
 	public function fetch_all()
 	{
@@ -211,6 +230,7 @@ class Array_Disk {
 
 	/**
 	 * Rewind the file to the first line
+	 * @since 0.3.0
 	 */
 	public function rewind()
 	{
@@ -218,8 +238,9 @@ class Array_Disk {
 	}
 
 	/**
-	 * Get total array
+	 * Get total element / array length
 	 * @return int
+	 * @since 0.1.0
 	 */
 	public function length()
 	{
@@ -230,6 +251,7 @@ class Array_Disk {
 	 * Get total lines of particular file
 	 * @param string $filename
 	 * @return int Total line number
+	 * @since 0.1.1
 	 */
 	public function get_total_lines($filename = '')
 	{
@@ -249,6 +271,11 @@ class Array_Disk {
 		return $line_count;
 	}
 
+	/**
+	 * Magic method destruct.
+	 * Reset file handle and remove array disk file if $_save is FALSE
+	 * @since 0.1.0
+	 */
 	function __destruct()
 	{
 		if(file_exists($this->_filename))
