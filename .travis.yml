@@ -12,6 +12,7 @@ matrix:
 
 before_script:
     - wget http://phpdox.de/releases/phpdox.phar
+    - composer self-update
     - composer install
 
 script: phpunit
