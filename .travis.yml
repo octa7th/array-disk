@@ -11,6 +11,9 @@ matrix:
         - php: hhvm
 
 before_script:
+    - wget http://phpdox.de/releases/phpdox.phar
     - composer install
 
 script: phpunit
+
+after_script: php phpdox.phar
