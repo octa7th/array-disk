@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/octa7th/array-disk.svg?branch=master)](https://travis-ci.org/octa7th/array-disk)
+
+
 # Array Disk
 Store your array in temporary file to decrease memory usage when having a very very big array.
 
