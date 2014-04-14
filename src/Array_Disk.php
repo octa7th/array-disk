@@ -80,7 +80,7 @@ class Array_Disk {
 				$this->_total    = $this->get_total_lines($filename);
 			}
 		}
-		$this->_write_handle = new SplFileObject($this->_filename, 'w');
+		$this->_write_handle = new SplFileObject($this->_filename, 'a');
 		$this->_read_handle  = new SplFileObject($this->_filename, 'r');
 	}
 
@@ -286,4 +286,4 @@ class Array_Disk {
 		}
 	}
 
-} 
+}
