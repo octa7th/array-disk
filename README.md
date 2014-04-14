@@ -76,6 +76,8 @@ $ard->rewind() // Reset cursor back to the first line
     * Create new method fetch_all
 * 0.5.1 :
 	* Fix bugs total is NULL
+* 0.5.2 :
+    * Fix bugs data loss if file is not empty
 
 ## License
 ### The MIT License (MIT)
