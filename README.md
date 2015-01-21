@@ -50,6 +50,8 @@ $ard->read(); // return 'Value 6'
 
 $ard->rewind() // Reset cursor back to the first line
 
+$ard->sort() // Sort data
+
 ```
 
 ## Changelog
@@ -75,14 +77,16 @@ $ard->rewind() // Reset cursor back to the first line
 * 0.5.0 :
     * Create new method fetch_all
 * 0.5.1 :
-	* Fix bugs total is NULL
+    * Fix bugs total is NULL
 * 0.5.2 :
     * Fix bugs data loss if file is not empty
+* 0.6.0 :
+    * Create new method sort
 
 ## License
 ### The MIT License (MIT)
 
-Copyright (c) 2014, Muhammad Sofyan \<<octa7th@gmail.com>\>
+Copyright (c) 2014 - 2015, Muhammad Sofyan \<<octa7th@gmail.com>\>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

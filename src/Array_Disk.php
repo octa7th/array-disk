@@ -10,7 +10,7 @@
  * @author    Muhammad Sofyan <octa7th@gmail.com>
  * @copyright 2014 Muhammad Sofyan
  * @license   http://opensource.org/licenses/MIT
- * @version   0.5.2
+ * @version   0.6.0
  */
 
 class Array_Disk {
@@ -160,6 +160,7 @@ class Array_Disk {
 	 * @param $data
 	 * @param array $keys
 	 * @return mixed
+	 * @since 0.6.0
 	 */
 	public static function get_value($data, array $keys)
 	{
@@ -270,6 +271,7 @@ class Array_Disk {
 	 * Convert string to data using json_decode
 	 * @param string $textLine
 	 * @return mixed
+	 * @since 0.6.0
 	 */
 	private function parse_line($textLine = "")
 	{
@@ -320,6 +322,7 @@ class Array_Disk {
 	 * @param string $key Key from array to sort
 	 * @param string $option See linux sort option
 	 * @return bool
+	 * @since 0.6.0
 	 */
 	public function sort($key = "", $option = "")
 	{
@@ -347,6 +350,7 @@ class Array_Disk {
 	 * Change array disk main file storage
 	 * @param string $filename
 	 * @return bool
+	 * @since 0.6.0
 	 */
 	private function _change_array_file($filename = "")
 	{
@@ -366,6 +370,7 @@ class Array_Disk {
 	 * @param $filename
 	 * @param string $option
 	 * @return bool
+	 * @since 0.6.0
 	 */
 	private function _sort_array_file($filename, $option = "")
 	{
@@ -396,6 +401,7 @@ class Array_Disk {
 			$handle->fseek($handle->ftell());
 			$handle->fwrite(PHP_EOL);
 		}
+		return TRUE;
 	}
 
 	/**
