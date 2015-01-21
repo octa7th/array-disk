@@ -192,5 +192,73 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($ard->length() === 0);
 	}
 
+	public function testGetValueFunction()
+	{
+		$data = array(
+			'this' => array(
+				'array' => array(
+					'is' => array(
+						'in' => array(
+							'a' => array(
+								'deep' => 'sea'
+							)
+						)
+					)
+				)
+			)
+		);
+		$value = Array_Disk::get_value($data, array('this', 'array', 'is', 'in', 'a', 'deep'));
+		$this->assertEquals('sea', $value);
+	}
+
+	public function testSort()
+	{
+		$arrayDisk = new Array_Disk();
+		$arrayDisk->save();
+
+		$arrayDisk->push("c");
+		$arrayDisk->push("a");
+		$arrayDisk->push("b");
+
+		$arrayDisk->sort();
+		$first = $arrayDisk->get(0);
+		$this->assertEquals("a", $first);
+	}
+
+	public function testBigSort()
+	{
+		$arrayDisk = new Array_Disk();
+		$max = 10 * 1024;
+		$cd = $max;
+
+		for($i = 0; $i < $max; $i++)
+		{
+			$arrayDisk->push(array('a' => $i, 'b' => $cd--));
+		}
+
+		$arrayDisk->sort('b', 'n');
+		$first = $arrayDisk->get(0);
+		$this->assertArrayHasKey('a', $first);
+		$this->assertEquals(10 * 1024 - 1, $first['a']);
+	}
+
+	public function testDeepSort()
+	{
+		$arrayDisk = new Array_Disk();
+		$arrayDisk->save();
+		$max = 10 * 1024;
+		$cd = $max;
+
+		for($i = 0; $i < $max; $i++)
+		{
+			$arrayDisk->push(array('a' => $i, 'b' => $cd--, 'c' => array('d' => array('e' => $cd * 2 - 1))));
+		}
+
+		$arrayDisk->sort('c.d.e', 'n');
+		$first = $arrayDisk->get(0);
+		$this->assertEquals(-1, $first['c']['d']['e']);
+	}
+
+
 }
  

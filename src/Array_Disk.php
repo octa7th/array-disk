@@ -54,18 +54,22 @@ class Array_Disk {
 	 */
 	private $_save;
 
+	private $_sort_key = "";
+
 	/**
 	 * Magic method construct.
 	 * Create array disk file, if $filename parameter is specified then use that file as array disk file
 	 * @param string $filename : file name (full path) to be use as array_disk storage
+	 * @param string $sortKey
 	 * @since 0.1.0
 	 */
-	function __construct($filename = '')
+	function __construct($filename = '', $sortKey = "")
 	{
 		$this->_key   = 0;
 		$this->_temp  = '/tmp/';
 		$this->_save  = FALSE;
 		$this->_total = 0;
+		$this->_sort_key = $sortKey;
 
 		if($filename === '')
 		{
@@ -108,15 +112,22 @@ class Array_Disk {
 	 * Store a whole array to Array_Disk object.
 	 * Use with caution, this method will override existing data
 	 * @param array $data
+	 * @param string $sort
 	 * @since 0.1.0
 	 */
-	public function store(array $data)
+	public function store(array $data, $sort = "")
 	{
 		$this->_write_handle->ftruncate(0);
 		$this->_write_handle->fseek(0);
 		foreach($data as $element)
 		{
-			$this->_write_handle->fwrite(json_encode($element) . PHP_EOL);
+			$sortVal = "";
+			if($this->_sort_key !== "")
+			{
+				$sortVal = self::get_value($data, $this->_sort_key);
+				$sortVal = "$sortVal]|";
+			}
+			$this->_write_handle->fwrite($sort . $sortVal . json_encode($element) . PHP_EOL);
 		}
 		$this->_total = count($data);
 	}
@@ -128,9 +139,45 @@ class Array_Disk {
 	 */
 	public function append($data = NULL)
 	{
+		$sortVal = "";
+		if($this->_sort_key !== "")
+		{
+			$keys = explode('.', $this->_sort_key);
+			$sortVal = self::get_value($data, $keys);
+			$sortVal = "$sortVal]|";
+		}
 		$this->_write_handle->fseek($this->_write_handle->ftell());
-		$this->_write_handle->fwrite(json_encode($data) . PHP_EOL);
+		$this->_write_handle->fwrite($sortVal . json_encode($data) . PHP_EOL);
 		$this->_total++;
+	}
+
+	/**
+	 * @param $data
+	 * @param array $keys
+	 * @return mixed
+	 */
+	public static function get_value($data, array $keys)
+	{
+		if(count($keys) === 0) return $data;
+
+		$key = array_shift($keys);
+
+		if(is_array($data))
+		{
+			if(isset($data[$key]))
+			{
+				return self::get_value($data[$key], $keys);
+			}
+		}
+		else if(is_object($data))
+		{
+			if(isset($data->$key))
+			{
+				return self::get_value($data->$key, $keys);
+			}
+		}
+
+		return NULL;
 	}
 
 	/**
@@ -140,9 +187,7 @@ class Array_Disk {
 	 */
 	public function push($data = NULL)
 	{
-		$this->_write_handle->fseek($this->_write_handle->ftell());
-		$this->_write_handle->fwrite(json_encode($data) . PHP_EOL);
-		$this->_total++;
+		$this->append($data);
 	}
 
 	/**
@@ -160,7 +205,13 @@ class Array_Disk {
 			{
 				foreach($data as $element)
 				{
-					$this->_write_handle->fwrite(json_encode($element) . PHP_EOL);
+					$sortVal = "";
+					if($this->_sort_key !== "")
+					{
+						$sortVal = self::get_value($element, $this->_sort_key);
+						$sortVal = "$sortVal]|";
+					}
+					$this->_write_handle->fwrite($sortVal . json_encode($element) . PHP_EOL);
 				}
 			}
 			$this->_total += count($data);
@@ -182,7 +233,7 @@ class Array_Disk {
 		$this->_write_handle->ftruncate($truncate);
 		$this->_write_handle->fseek($truncate);
 		$this->_total--;
-		return json_decode($json_data, TRUE);
+		return $this->parse_line($json_data);
 	}
 
 	/**
@@ -195,7 +246,7 @@ class Array_Disk {
 	{
 		$this->_read_handle->seek($array_key);
 		$data = $this->_read_handle->current();
-		return json_decode($data, TRUE);
+		return $this->parse_line($data);
 	}
 
 	/**
@@ -207,6 +258,12 @@ class Array_Disk {
 	public function read()
 	{
 		return $this->get($this->_key++);
+	}
+
+	private function parse_line($textLine = "")
+	{
+		$line = preg_replace('/^.*?\]\|/', '', $textLine);
+		return json_decode($line, TRUE);
 	}
 
 	/**
@@ -245,6 +302,77 @@ class Array_Disk {
 	public function length()
 	{
 		return $this->_total;
+	}
+
+	/**
+	 * @param string $key
+	 * @param string $option
+	 * @return bool
+	 */
+	public function sort($key = "", $option = "")
+	{
+		$filename = $this->_filename;
+		if($key !== "")
+		{
+			$unique = uniqid();
+			$filename = $this->_filename . $unique;
+			$sortedArrayDisk = new Array_Disk($filename, $key);
+			$sortedArrayDisk->save();
+			$this->rewind();
+
+			while($data = $this->read())
+			{
+				$sortedArrayDisk->push($data);
+			}
+
+			unset($sortedArrayDisk);
+		}
+		$this->_sort_array_file($filename, $option);
+		return $this->_change_array_file($filename);
+	}
+
+	private function _change_array_file($filename = "")
+	{
+		if(!file_exists($filename)) return FALSE;
+		$this->rewind();
+		unset($this->_write_handle);
+		unset($this->_read_handle);
+		if($this->_filename !== $filename) unlink($this->_filename);
+		$this->_filename = $filename;
+		$this->_write_handle = new SplFileObject($this->_filename, 'a');
+		$this->_read_handle  = new SplFileObject($this->_filename, 'r');
+		return TRUE;
+	}
+
+	private function _sort_array_file($filename, $option = "")
+	{
+		if( ! file_exists($filename) ) return FALSE;
+		if($option !== "")
+		{
+			shell_exec("sort -$option '$filename' > '$filename.sort'");
+		}
+		else
+		{
+			shell_exec("sort '$filename' > '$filename.sort'");
+		}
+		shell_exec("mv '$filename.sort' '$filename'");
+
+		$twoMB = 2 * 1024 * 1024;
+
+		if(filesize($filename) < $twoMB)
+		{
+			$content = trim(file_get_contents($filename));
+			file_put_contents($filename, $content . PHP_EOL);
+		}
+		else
+		{
+			$line = `wc -l '$filename'` - 1;
+			shell_exec("tail '$filename' -n $line > '$filename.tmp'");
+			shell_exec("mv '$filename.tmp' '$filename'");
+			$handle = new SplFileObject($filename, 'a');
+			$handle->fseek($handle->ftell());
+			$handle->fwrite(PHP_EOL);
+		}
 	}
 
 	/**
