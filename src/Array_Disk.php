@@ -54,6 +54,10 @@ class Array_Disk {
 	 */
 	private $_save;
 
+	/**
+	 * Key of array to sort
+	 * @var string
+	 */
 	private $_sort_key = "";
 
 	/**
@@ -152,6 +156,7 @@ class Array_Disk {
 	}
 
 	/**
+	 * Get value from an array, recursively
 	 * @param $data
 	 * @param array $keys
 	 * @return mixed
@@ -260,6 +265,12 @@ class Array_Disk {
 		return $this->get($this->_key++);
 	}
 
+	/**
+	 * Remove sort value.
+	 * Convert string to data using json_decode
+	 * @param string $textLine
+	 * @return mixed
+	 */
 	private function parse_line($textLine = "")
 	{
 		$line = preg_replace('/^.*?\]\|/', '', $textLine);
@@ -305,8 +316,9 @@ class Array_Disk {
 	}
 
 	/**
-	 * @param string $key
-	 * @param string $option
+	 * Sort Array Disk object
+	 * @param string $key Key from array to sort
+	 * @param string $option See linux sort option
 	 * @return bool
 	 */
 	public function sort($key = "", $option = "")
@@ -331,6 +343,11 @@ class Array_Disk {
 		return $this->_change_array_file($filename);
 	}
 
+	/**
+	 * Change array disk main file storage
+	 * @param string $filename
+	 * @return bool
+	 */
 	private function _change_array_file($filename = "")
 	{
 		if(!file_exists($filename)) return FALSE;
@@ -344,6 +361,12 @@ class Array_Disk {
 		return TRUE;
 	}
 
+	/**
+	 * Sort array using linux script
+	 * @param $filename
+	 * @param string $option
+	 * @return bool
+	 */
 	private function _sort_array_file($filename, $option = "")
 	{
 		if( ! file_exists($filename) ) return FALSE;
