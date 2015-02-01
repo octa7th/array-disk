@@ -385,22 +385,6 @@ class Array_Disk {
 		}
 		shell_exec("mv '$filename.sort' '$filename'");
 
-		$twoMB = 2 * 1024 * 1024;
-
-		if(filesize($filename) < $twoMB)
-		{
-			$content = trim(file_get_contents($filename));
-			file_put_contents($filename, $content . PHP_EOL);
-		}
-		else
-		{
-			$line = `wc -l '$filename'` - 1;
-			shell_exec("tail '$filename' -n $line > '$filename.tmp'");
-			shell_exec("mv '$filename.tmp' '$filename'");
-			$handle = new SplFileObject($filename, 'a');
-			$handle->fseek($handle->ftell());
-			$handle->fwrite(PHP_EOL);
-		}
 		return TRUE;
 	}
 
