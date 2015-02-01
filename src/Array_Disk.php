@@ -10,7 +10,7 @@
  * @author    Muhammad Sofyan <octa7th@gmail.com>
  * @copyright 2014 Muhammad Sofyan
  * @license   http://opensource.org/licenses/MIT
- * @version   0.6.0
+ * @version   0.7.0
  */
 
 class Array_Disk {
@@ -295,6 +295,25 @@ class Array_Disk {
 		}
 
 		$this->rewind();
+		return $data;
+	}
+
+	/**
+	 * Slice array
+	 * @param int $offset
+	 * @param null $count
+	 * @return array
+	 * @since 0.7.0
+	 */
+	public function slice($offset = 0, $count = NULL)
+	{
+		$count = is_null($count) ? $this->_total - $offset : $count;
+		$data = array();
+
+		while($offset < $this->_total && count($data) < $count)
+		{
+			$data[] = $this->get($offset++);
+		}
 		return $data;
 	}
 
