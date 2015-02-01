@@ -239,19 +239,46 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$arrayDisk->sort('b', 'n');
 		$first = $arrayDisk->get(0);
 		$this->assertArrayHasKey('a', $first);
-		$this->assertEquals(10 * 1024 - 1, $first['a']);
+		$this->assertEquals($max - 1, $first['a']);
 	}
 
-	public function testDeepSort()
+	public function testPreSort()
 	{
-		$arrayDisk = new Array_Disk();
-		$arrayDisk->save();
+		$arrayDisk = new Array_Disk('', 'b');
 		$max = 10 * 1024;
 		$cd = $max;
 
 		for($i = 0; $i < $max; $i++)
 		{
-			$arrayDisk->push(array('a' => $i, 'b' => $cd--, 'c' => array('d' => array('e' => $cd * 2 - 1))));
+			$arrayDisk->push(array('a' => $i, 'b' => $cd--));
+		}
+
+		$bFirst = $arrayDisk->get(0);
+		$this->assertEquals(0, $bFirst['a']);
+
+		$arrayDisk->sort('', 'n');
+		$first = $arrayDisk->get(0);
+		$this->assertArrayHasKey('a', $first);
+		$this->assertEquals($max - 1, $first['a']);
+	}
+
+	public function testDeepSort()
+	{
+		$arrayDisk = new Array_Disk();
+		$max = 10 * 1024;
+		$cd = $max;
+
+		for($i = 0; $i < $max; $i++)
+		{
+			$arrayDisk->push(array(
+				'a' => $i,
+				'b' => $cd--,
+				'c' => array(
+					'd' => array(
+						'e' => $cd * 2 - 1
+					)
+				)
+			));
 		}
 
 		$arrayDisk->sort('c.d.e', 'n');
@@ -261,4 +288,3 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 
 
 }
- 
