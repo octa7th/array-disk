@@ -39,6 +39,8 @@ $ard->merge(array('Value 5', 'Value 6')); // Merge array disk object with anothe
 
 $ard->length(); // return 6
 
+$ard->slice(2, 3); // return array('Value 2', 'Value 3', 'Value 4')
+
 $filename = $ard->get_filename(); // Get filename of array disk object storage
 
 $ard->read(); // Read array value from the first line (return 'Value 0')
@@ -48,9 +50,9 @@ $ard->read(); // return 'Value 3'
 $ard->read(); // return 'Value 5'
 $ard->read(); // return 'Value 6'
 
-$ard->rewind() // Reset cursor back to the first line
+$ard->rewind(); // Reset cursor back to the first line
 
-$ard->sort() // Sort data
+$ard->sort(); // Sort data
 
 ```
 
@@ -82,6 +84,8 @@ $ard->sort() // Sort data
     * Fix bugs data loss if file is not empty
 * 0.6.0 :
     * Create new method sort
+* 0.7.0 :
+    * Create new method slice
 
 ## License
 ### The MIT License (MIT)
