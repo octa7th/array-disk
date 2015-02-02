@@ -275,7 +275,14 @@ class Array_Disk {
 	 */
 	private function parse_line($textLine = "")
 	{
-		$line = preg_replace('/^.*?\]\|/', '', $textLine);
+		if(preg_match('/^.*?\]\|/', $textLine))
+		{
+			$line = preg_replace('/^.*?\]\|/', '', $textLine);
+		}
+		else
+		{
+			$line = $textLine;
+		}
 		return json_decode($line, TRUE);
 	}
 
