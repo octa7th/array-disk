@@ -86,6 +86,8 @@ $ard->sort(); // Sort data
     * Create new method sort
 * 0.7.0 :
     * Create new method slice
+* 0.7.1 :
+    * Fix preg_replace issue
 
 ## License
 ### The MIT License (MIT)
