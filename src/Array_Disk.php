@@ -225,6 +225,20 @@ class Array_Disk {
 	}
 
 	/**
+	 * Concat / Merge Array_Disk object with another Array_Disk object
+	 * @param Array_Disk $disk
+	 */
+	public function concat(Array_Disk $disk)
+	{
+		$disk->rewind();
+		while($data = $disk->read())
+		{
+			$this->push($data);
+		}
+		$disk->rewind();
+	}
+
+	/**
 	 * Pop the element off the end of array
 	 * @return mixed The last value of the array
 	 * @since 0.2.0

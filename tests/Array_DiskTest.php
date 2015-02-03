@@ -158,6 +158,19 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(15, $this->ard->length());
 	}
 
+	public function testConcat()
+	{
+		$ard1 = new Array_Disk();
+		$ard1->store(array(1,2,3));
+		$ard2 = new Array_Disk();
+		$ard2->store(array(4,5,6));
+		$ard1->concat($ard2);
+		$this->assertEquals(array(1,2,3,4,5,6), $ard1->fetch_all());
+
+		// Make sure the key is back to 0
+		$this->assertEquals(4, $ard2->read());
+	}
+
 	public function testSaveToDisk()
 	{
 		$ard = new Array_Disk();
