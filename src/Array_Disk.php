@@ -10,7 +10,7 @@
  * @author    Muhammad Sofyan <octa7th@gmail.com>
  * @copyright 2014 Muhammad Sofyan
  * @license   http://opensource.org/licenses/MIT
- * @version   0.7.1
+ * @version   0.8.0
  */
 
 class Array_Disk {
@@ -227,6 +227,7 @@ class Array_Disk {
 	/**
 	 * Concat / Merge Array_Disk object with another Array_Disk object
 	 * @param Array_Disk $disk
+	 * @since 0.8.0
 	 */
 	public function concat(Array_Disk $disk)
 	{
