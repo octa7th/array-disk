@@ -60,6 +60,8 @@ class Array_Disk {
 	 */
 	private $_sort_key = "";
 
+	private $_method = 'json';
+
 	/**
 	 * Magic method construct.
 	 * Create array disk file, if $filename parameter is specified then use that file as array disk file
@@ -102,6 +104,11 @@ class Array_Disk {
 		return $this->_filename;
 	}
 
+	public function set_method($method = 'json')
+	{
+		$this->_method = $method;
+	}
+
 	/**
 	 * Set save flag value
 	 * @param boolean $keep Should we keep the file?
@@ -131,7 +138,15 @@ class Array_Disk {
 				$sortVal = self::get_value($data, $this->_sort_key);
 				$sortVal = "$sortVal]|";
 			}
-			$this->_write_handle->fwrite($sort . $sortVal . json_encode($element) . PHP_EOL);
+
+			if($this->_method === 'json')
+			{
+				$this->_write_handle->fwrite($sort . $sortVal . json_encode($element) . PHP_EOL);
+			}
+			else
+			{
+				$this->_write_handle->fwrite($sort . $sortVal . serialize($element) . PHP_EOL);
+			}
 		}
 		$this->_total = count($data);
 	}
@@ -151,7 +166,14 @@ class Array_Disk {
 			$sortVal = "$sortVal]|";
 		}
 		$this->_write_handle->fseek($this->_write_handle->ftell());
-		$this->_write_handle->fwrite($sortVal . json_encode($data) . PHP_EOL);
+		if($this->_method === 'json')
+		{
+			$this->_write_handle->fwrite($sortVal . json_encode($data) . PHP_EOL);
+		}
+		else
+		{
+			$this->_write_handle->fwrite($sortVal . serialize($data) . PHP_EOL);
+		}
 		$this->_total++;
 	}
 
@@ -217,7 +239,14 @@ class Array_Disk {
 						$sortVal = self::get_value($element, $this->_sort_key);
 						$sortVal = "$sortVal]|";
 					}
-					$this->_write_handle->fwrite($sortVal . json_encode($element) . PHP_EOL);
+					if($this->_method === 'json')
+					{
+						$this->_write_handle->fwrite($sortVal . json_encode($element) . PHP_EOL);
+					}
+					else
+					{
+						$this->_write_handle->fwrite($sortVal . serialize($element) . PHP_EOL);
+					}
 				}
 			}
 			$this->_total += count($data);
@@ -298,7 +327,14 @@ class Array_Disk {
 		{
 			$line = $textLine;
 		}
-		return json_decode($line, TRUE);
+		if($this->_method === 'json')
+		{
+			return json_decode($line, TRUE);
+		}
+		else
+		{
+			return unserialize($line);
+		}
 	}
 
 	/**
