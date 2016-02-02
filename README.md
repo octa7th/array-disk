@@ -90,6 +90,9 @@ $ard->sort(); // Sort data
     * Fix preg_replace issue
 * 0.8.0 :
     * New method concat
+* 0.9.0 :
+    * Add new option to use php serialize instead of json
+    * Optimize code
 
 ## License
 ### The MIT License (MIT)
