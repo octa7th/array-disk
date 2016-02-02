@@ -186,11 +186,11 @@ class Array_Disk {
 	 */
 	public static function get_value($data, array $keys)
 	{
-		if(count($keys) === 0) return $data;
+		if(empty($keys)) return $data;
 
 		$key = array_shift($keys);
 
-		if(is_array($data))
+		if((array) $data === $data)
 		{
 			if(isset($data[$key]))
 			{
