@@ -10,7 +10,7 @@
  * @author    Muhammad Sofyan <octa7th@gmail.com>
  * @copyright 2014 Muhammad Sofyan
  * @license   http://opensource.org/licenses/MIT
- * @version   0.8.0
+ * @version   0.9.0
  */
 
 class Array_Disk {
@@ -104,6 +104,11 @@ class Array_Disk {
 		return $this->_filename;
 	}
 
+	/**
+	 * Select method to store text file (json|serialize)
+	 * @param string $method
+	 * @since 0.9.0
+	 */
 	public function set_method($method = 'json')
 	{
 		$this->_method = $method;
