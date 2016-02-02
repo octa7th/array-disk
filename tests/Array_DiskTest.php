@@ -20,6 +20,8 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 	{
 		parent::__construct();
 		$this->ard = new Array_Disk();
+		$this->ard2 = new Array_Disk();
+		$this->ard2->set_method('serialize');
 	}
 
 	public function testConstruct()
@@ -32,6 +34,7 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$text1 = 'Test append file 1';
 		$text2 = 'Test append file 2';
 		$text3 = 'Test append file 3';
+
 		$this->ard->append($text1);
 		$this->ard->append($text2);
 		$this->ard->append($text3);
@@ -39,6 +42,14 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($text3, $this->ard->get(2));
 		$this->assertEquals('Test append file 1', $this->ard->read());
 		$this->assertEquals('Test append file 2', $this->ard->read());
+
+		$this->ard2->append($text1);
+		$this->ard2->append($text2);
+		$this->ard2->append($text3);
+		$this->assertEquals(3, $this->ard2->length());
+		$this->assertEquals($text3, $this->ard2->get(2));
+		$this->assertEquals('Test append file 1', $this->ard2->read());
+		$this->assertEquals('Test append file 2', $this->ard2->read());
 	}
 
 	public function testStoreAndGetElement()
@@ -52,6 +63,11 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(3, $this->ard->length());
 		$this->assertEquals($data[0], $this->ard->get(0));
 		$this->assertEquals($data[2], $this->ard->get(2));
+
+		$this->ard2->store($data);
+		$this->assertEquals(3, $this->ard2->length());
+		$this->assertEquals($data[0], $this->ard2->get(0));
+		$this->assertEquals($data[2], $this->ard2->get(2));
 	}
 
 	public function testGetTotalLines()
@@ -80,6 +96,16 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$dataStored = array();
 
 		while($d = $this->ard->read())
+		{
+			$dataStored[] = $d;
+		}
+
+		$this->assertEquals($data, $dataStored);
+
+		$this->ard2->store($data);
+		$dataStored = array();
+
+		while($d = $this->ard2->read())
 		{
 			$dataStored[] = $d;
 		}
@@ -121,6 +147,14 @@ class Array_DiskTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($data[0], $this->ard->read());
 		$this->assertEquals($data[1], $this->ard->read());
 		$this->assertEquals($data[2], $this->ard->read());
+
+		$this->ard2->store($data);
+		$this->ard2->read();
+		$this->ard2->read();
+		$this->ard2->rewind();
+		$this->assertEquals($data[0], $this->ard2->read());
+		$this->assertEquals($data[1], $this->ard2->read());
+		$this->assertEquals($data[2], $this->ard2->read());
 	}
 
 	public function testMerge()
